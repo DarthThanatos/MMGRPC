@@ -93,7 +93,7 @@ internal constructor(private val channel: ManagedChannel):
                     else probeGameDescription(userName, gameName, client)
                 val player = client.joinGame(userName, gameDescription, client.blockingStub)
                 println("${player.playerName}, ${player.playerId}, ${player.role}, ${player.gameId}")
-                println("Waiting for opponent")
+                println("Waiting for opponent to arrive")
                 if (player.role == Role.VERIFIER) verifier(player, client)
                 else guesser(player, client)
             } catch (e: io.grpc.StatusRuntimeException){
