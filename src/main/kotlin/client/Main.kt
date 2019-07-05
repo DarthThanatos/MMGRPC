@@ -56,11 +56,14 @@ internal constructor(private val channel: ManagedChannel):
             return gamesByName.gamesList.get(index)
         }
 
+
         @JvmStatic
         private fun verifier(player:Player, client: MasterMindClient){
             val msg = "please type a 4-letter combination of colors to guess by your opponent"
             val colorsArray = client.getSecretCombination(player.playerName, msg)
+            println("Waiting for guesser to arrive")
             val opponent = client.waitForGuesser(colorsArray, player, client.blockingStub)
+            client.keepAlive(player, client.asynchStub)
             println("Guesser has arrived: ${opponent.playerName}, ${opponent.playerId}, ${opponent.role}, ${opponent.gameId}")
             val latch = CountDownLatch(1)
             val verifyLogMsg = "please type a 4-letter combination of verification markers"
@@ -70,14 +73,20 @@ internal constructor(private val channel: ManagedChannel):
 
         @JvmStatic
         private fun guesser(player: Player, client: MasterMindClient){
+            println("Waiting for verifier to arrive")
             val opponent = client.waitForVerifier(player, client.blockingStub)
+            client.keepAlive(player, client.asynchStub)
             println("Verifier has arrived: ${opponent.playerName}, ${opponent.playerId}, ${opponent.role}, ${opponent.gameId}")
-            for(i in 0 until 16){
+            while (true){
                 val msg = "please type a 4-letter combination of colors"
                 val colorsArray = client.getSecretCombination(player.playerName, msg)
                 val verification = client.guess(colorsArray, player, client.blockingStub)
-                println(verification)
+                println("Verification: ${verification.first.name}, ${verification.second.name}, ${verification.third.name}, ${verification.fourth.name}")
+                if (verification.endGame){
+                    break
+                }
             }
+
         }
 
         @Throws(Exception::class)
@@ -93,7 +102,6 @@ internal constructor(private val channel: ManagedChannel):
                     else probeGameDescription(userName, gameName, client)
                 val player = client.joinGame(userName, gameDescription, client.blockingStub)
                 println("${player.playerName}, ${player.playerId}, ${player.role}, ${player.gameId}")
-                println("Waiting for opponent to arrive")
                 if (player.role == Role.VERIFIER) verifier(player, client)
                 else guesser(player, client)
             } catch (e: io.grpc.StatusRuntimeException){

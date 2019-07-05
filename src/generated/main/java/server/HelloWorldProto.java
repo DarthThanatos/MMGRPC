@@ -90,7 +90,7 @@ public final class HelloWorldProto {
       "\004BLUE\020\001\022\t\n\005GREEN\020\002\022\n\n\006YELLOW\020\003\022\n\n\006PURPLE" +
       "\020\004\022\n\n\006ORANGE\020\005*H\n\022VerificationMarker\022\030\n\024" +
       "GOOD_PLACE_AND_COLOR\020\000\022\016\n\nGOOD_COLOR\020\001\022\010" +
-      "\n\004NONE\020\0022\220\005\n\007Greeter\022>\n\010SayHello\022\030.hello" +
+      "\n\004NONE\020\0022\311\005\n\007Greeter\022>\n\010SayHello\022\030.hello" +
       "world.HelloRequest\032\026.helloworld.HelloRep" +
       "ly\"\000\022C\n\rSayHelloAgain\022\030.helloworld.Hello",
       "Request\032\026.helloworld.HelloReply\"\000\022H\n\nCre" +
@@ -102,12 +102,14 @@ public final class HelloWorldProto {
       "aitForGuesser\022\027.helloworld.Combination\032\022" +
       ".helloworld.Player\"\000\022;\n\017WaitForVerifier\022" +
       "\022.helloworld.Player\032\022.helloworld.Player\"" +
-      "\000\022<\n\005Guess\022\027.helloworld.Combination\032\030.he",
-      "lloworld.Verification\"\000\022=\n\nGetGuesses\022\022." +
-      "helloworld.Player\032\027.helloworld.Combinati" +
-      "on\"\0000\001\022;\n\006Verify\022\030.helloworld.Verificati" +
-      "on\032\025.helloworld.VerifyAck\"\000B!\n\006serverB\017H" +
-      "elloWorldProtoP\001\242\002\003HLWb\006proto3"
+      "\000\0227\n\tKeepAlive\022\022.helloworld.Player\032\022.hel",
+      "loworld.Player\"\000(\001\022<\n\005Guess\022\027.helloworld" +
+      ".Combination\032\030.helloworld.Verification\"\000" +
+      "\022=\n\nGetGuesses\022\022.helloworld.Player\032\027.hel" +
+      "loworld.Combination\"\0000\001\022;\n\006Verify\022\030.hell" +
+      "oworld.Verification\032\025.helloworld.VerifyA" +
+      "ck\"\000B!\n\006serverB\017HelloWorldProtoP\001\242\002\003HLWb" +
+      "\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

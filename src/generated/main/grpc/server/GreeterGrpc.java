@@ -254,6 +254,38 @@ public final class GreeterGrpc {
      return getWaitForVerifierMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<server.Player,
+      server.Player> getKeepAliveMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "KeepAlive",
+      requestType = server.Player.class,
+      responseType = server.Player.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.CLIENT_STREAMING)
+  public static io.grpc.MethodDescriptor<server.Player,
+      server.Player> getKeepAliveMethod() {
+    io.grpc.MethodDescriptor<server.Player, server.Player> getKeepAliveMethod;
+    if ((getKeepAliveMethod = GreeterGrpc.getKeepAliveMethod) == null) {
+      synchronized (GreeterGrpc.class) {
+        if ((getKeepAliveMethod = GreeterGrpc.getKeepAliveMethod) == null) {
+          GreeterGrpc.getKeepAliveMethod = getKeepAliveMethod = 
+              io.grpc.MethodDescriptor.<server.Player, server.Player>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.CLIENT_STREAMING)
+              .setFullMethodName(generateFullMethodName(
+                  "helloworld.Greeter", "KeepAlive"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  server.Player.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  server.Player.getDefaultInstance()))
+                  .setSchemaDescriptor(new GreeterMethodDescriptorSupplier("KeepAlive"))
+                  .build();
+          }
+        }
+     }
+     return getKeepAliveMethod;
+  }
+
   private static volatile io.grpc.MethodDescriptor<server.Combination,
       server.Verification> getGuessMethod;
 
@@ -434,6 +466,13 @@ public final class GreeterGrpc {
 
     /**
      */
+    public io.grpc.stub.StreamObserver<server.Player> keepAlive(
+        io.grpc.stub.StreamObserver<server.Player> responseObserver) {
+      return asyncUnimplementedStreamingCall(getKeepAliveMethod(), responseObserver);
+    }
+
+    /**
+     */
     public void guess(server.Combination request,
         io.grpc.stub.StreamObserver<server.Verification> responseObserver) {
       asyncUnimplementedUnaryCall(getGuessMethod(), responseObserver);
@@ -504,6 +543,13 @@ public final class GreeterGrpc {
                 server.Player,
                 server.Player>(
                   this, METHODID_WAIT_FOR_VERIFIER)))
+          .addMethod(
+            getKeepAliveMethod(),
+            asyncClientStreamingCall(
+              new MethodHandlers<
+                server.Player,
+                server.Player>(
+                  this, METHODID_KEEP_ALIVE)))
           .addMethod(
             getGuessMethod(),
             asyncUnaryCall(
@@ -607,6 +653,14 @@ public final class GreeterGrpc {
         io.grpc.stub.StreamObserver<server.Player> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getWaitForVerifierMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public io.grpc.stub.StreamObserver<server.Player> keepAlive(
+        io.grpc.stub.StreamObserver<server.Player> responseObserver) {
+      return asyncClientStreamingCall(
+          getChannel().newCall(getKeepAliveMethod(), getCallOptions()), responseObserver);
     }
 
     /**
@@ -837,6 +891,7 @@ public final class GreeterGrpc {
   private static final int METHODID_GUESS = 7;
   private static final int METHODID_GET_GUESSES = 8;
   private static final int METHODID_VERIFY = 9;
+  private static final int METHODID_KEEP_ALIVE = 10;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -905,6 +960,9 @@ public final class GreeterGrpc {
     public io.grpc.stub.StreamObserver<Req> invoke(
         io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
+        case METHODID_KEEP_ALIVE:
+          return (io.grpc.stub.StreamObserver<Req>) serviceImpl.keepAlive(
+              (io.grpc.stub.StreamObserver<server.Player>) responseObserver);
         default:
           throw new AssertionError();
       }
@@ -963,6 +1021,7 @@ public final class GreeterGrpc {
               .addMethod(getJoinGameMethod())
               .addMethod(getWaitForGuesserMethod())
               .addMethod(getWaitForVerifierMethod())
+              .addMethod(getKeepAliveMethod())
               .addMethod(getGuessMethod())
               .addMethod(getGetGuessesMethod())
               .addMethod(getVerifyMethod())

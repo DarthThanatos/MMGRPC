@@ -4,6 +4,7 @@ import io.grpc.stub.StreamObserver
 import server.*
 import server.Util.Companion.newCombinationRequest
 import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 interface Verifier {
 
@@ -24,8 +25,9 @@ interface Verifier {
 
 class VerifierImpl: Verifier{
 
+
     private fun newVerification(player: Player, markers: Array<VerificationMarker>) =
-        Verification.newBuilder().setPlayer(player).setFirst(markers[0]).setSecond(markers[1]).setThird(markers[2]).setFourth(markers[3]).setEndGame(false).build()
+        Verification.newBuilder().setPlayer(player).setFirst(markers[0]).setSecond(markers[1]).setThird(markers[2]).setFourth(markers[3]).build()
 
     override fun subscribeForGuesses(
         player: Player,
@@ -36,7 +38,7 @@ class VerifierImpl: Verifier{
     ) {
         asynchBlock.getGuesses(player, object: StreamObserver<Combination>{
             override fun onNext(value: Combination) {
-                println("Got combination: $value")
+                println("Got combination: ${value.first.name} ${value.second.name} ${value.third.name} ${value.fourth.name}")
                 val markers = interaction(player.playerName)
                 println(blockingStub.verify(newVerification(player, markers)))
             }

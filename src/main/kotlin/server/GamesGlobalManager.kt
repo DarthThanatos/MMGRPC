@@ -7,11 +7,12 @@ import java.lang.Exception
 import java.util.*
 
 data class GameData(
+    val gameName: String,
     val verifier: PlayerData = PlayerData(),
     val guesser: PlayerData = PlayerData(),
-    val creationDate: Date,
-    val gameId: UUID,
-    val gameName: String
+    val creationDate: Date = Date(),
+    val gameId: UUID = UUID.randomUUID(),
+    val gameStatistics: GameStatistics = GameStatistics()
 )
 
 interface GamesGlobalManager{
@@ -19,6 +20,7 @@ interface GamesGlobalManager{
     fun joinGame(request: Player, responseObserver: StreamObserver<Player>)
     fun getGamesByName(request: GameDescription, responseObserver: StreamObserver<GamesByName>)
     fun gameById(id: UUID): GameData?
+    fun opponentUUID(gameId: UUID, myId: UUID): UUID
 }
 
 class GamesGlobalManagerImpl: GamesGlobalManager{
@@ -27,8 +29,10 @@ class GamesGlobalManagerImpl: GamesGlobalManager{
 
     override fun gameById(id: UUID) = games[id]
 
-    private fun newGameData(request: GameDescription) =
-        GameData(gameName = request.gameName, gameId = UUID.randomUUID(), creationDate = Date())
+    override fun opponentUUID(gameId: UUID, myId: UUID): UUID {
+        val game = games[gameId]!!
+        return if(myId == game.guesser.id) game.verifier.id else game.guesser.id
+    }
 
     private fun gameDataToGameDescription(gameData: GameData) = GameDescription.newBuilder()
         .setCreationDate(gameData.creationDate.toString())
@@ -39,7 +43,7 @@ class GamesGlobalManagerImpl: GamesGlobalManager{
         .build()
 
     override fun createGame(request: GameDescription, responseObserver: StreamObserver<GameDescription>) {
-        val game = newGameData(request)
+        val game =  GameData(gameName = request.gameName)
         val reply = gameDataToGameDescription(game)
         games[game.gameId] = game
         responseObserver.onNext(reply)

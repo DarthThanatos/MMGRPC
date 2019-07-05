@@ -62,7 +62,7 @@ service Greeter {
   rpc JoinGame (Player) returns (Player) {}
   rpc WaitForGuesser(Combination) returns (Player) {}
   rpc WaitForVerifier(Player) returns (Player) {}
-
+  rpc KeepAlive(stream Player) returns(Player) {}
   rpc Guess (Combination) returns (Verification) {}
   rpc GetGuesses (Player) returns (stream Combination) {}
   rpc Verify (Verification) returns (VerifyAck) {}

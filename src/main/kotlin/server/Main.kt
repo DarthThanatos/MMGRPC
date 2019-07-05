@@ -8,9 +8,10 @@ import java.util.logging.Level
 import java.util.logging.Logger
 
 internal val globalManager = GamesGlobalManagerImpl()
-internal val opponentsMatcher = OpponentsMatcherImpl(globalManager)
 internal val helloSayer = HelloSayerImpl()
+internal val opponentsMatcher = OpponentsMatcherImpl(globalManager)
 internal val matchManager = MatchManagerImpl(globalManager)
+internal val keepAlive = KeepAliveImpl(globalManager)
 
 class MasterMindServer {
 
@@ -52,7 +53,8 @@ class MasterMindServer {
         HelloSayer by helloSayer,
         GamesGlobalManager by globalManager,
         OpponentsMatcher by opponentsMatcher,
-        MatchManager by matchManager { }
+        MatchManager by matchManager,
+        KeepAlive by keepAlive { }
 
     companion object {
         private val logger = Logger.getLogger(MasterMindServer::class.java.name)
