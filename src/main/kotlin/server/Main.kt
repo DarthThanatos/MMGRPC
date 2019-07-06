@@ -63,7 +63,6 @@ class MasterMindServer {
          * Main launches the server from the command line.
          */
         @Throws(IOException::class, InterruptedException::class)
-        @JvmStatic
         fun main(args: Array<String>) {
             println("Starting server")
             val server = MasterMindServer()
@@ -71,4 +70,9 @@ class MasterMindServer {
             server.blockUntilShutdown()
         }
     }
+}
+
+
+fun main(args: Array<String>){
+    MasterMindServer.main(args)
 }

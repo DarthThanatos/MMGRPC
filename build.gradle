@@ -49,3 +49,15 @@ compileKotlin {
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
+
+
+task runServer(type: JavaExec){    
+    classpath sourceSets.main.runtimeClasspath
+    main = "server.MainKt"
+}
+
+task runClient(type: JavaExec){    
+    standardInput = System.in
+    classpath sourceSets.main.runtimeClasspath
+    main = "client.MainKt"
+}

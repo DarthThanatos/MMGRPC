@@ -113,3 +113,7 @@ internal constructor(private val channel: ManagedChannel):
         }
     }
 }
+
+fun main(args: Array<String>){
+    MasterMindClient.main(args)
+}
