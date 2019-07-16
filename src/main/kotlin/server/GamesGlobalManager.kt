@@ -82,7 +82,7 @@ class GamesGlobalManagerImpl: GamesGlobalManager{
             .build()
 
     override fun getGamesByName(request: GameDescription, responseObserver: StreamObserver<GamesByName>) {
-        val filteredGames = games.filter { it.value.gameName == request.gameName }.values
+        val filteredGames = games.filter { it.value.gameName == request.gameName && (it.value.verifier.role == Role.DEFAULT || it.value.guesser.role == Role.DEFAULT)}.values
         responseObserver.onNext(createGamesByNameResponse(filteredGames, request.gameName))
         responseObserver.onCompleted()
     }

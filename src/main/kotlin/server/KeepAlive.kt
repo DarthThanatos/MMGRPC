@@ -62,7 +62,7 @@ internal class KeepAliveObserver(
     }
 
     override fun onError(t: Throwable) {
-        println("error ${this.hashCode()}")
+        println("error ${playerData.name}  ${this.hashCode()}")
         println(t.message)
     }
 
